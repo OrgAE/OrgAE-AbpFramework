@@ -1,11 +1,12 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AutoMapper;
+using Volo.Abp.GlobalFeatures;
 using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
+using Volo.CmsKit.GlobalFeatures;
 using Volo.CmsKit.Localization;
 using Volo.CmsKit.Public.Web.Menus;
 using Volo.CmsKit.Web;
@@ -54,10 +55,16 @@ namespace Volo.CmsKit.Public.Web
             {
                 options.AddMaps<CmsKitPublicWebModule>(validate: true);
             });
+        }
 
+        public override void PostConfigureServices(ServiceConfigurationContext context)
+        {
             Configure<RazorPagesOptions>(options =>
             {
-                options.Conventions.AddPageRoute("/CmsKit/Pages/Index", "/{*pageUrl}");
+                if (GlobalFeatureManager.Instance.IsEnabled<PagesFeature>())
+                {
+                    options.Conventions.AddPageRoute("/CmsKit/Pages/Index", @"{*pageUrl:minlength(1)}");
+                }
             });
         }
     }
