@@ -14,5 +14,15 @@
         {
             public const string UrlAlreadyExist = "CmsKit:Page:0001";
         }
+
+        public static class Blogs
+        {
+            public const string SlugAlreadyExist = "CmsKit:BlogPost:0001";
+        }
+        
+        public static class MediaDescriptors
+        {
+            public const string InvalidName = "CmsKit:Media:0001";
+        }
     }
 }
